@@ -20,9 +20,9 @@ mybatis:
 spring:
   # 配置邮件任务
   mail:
-    username:
+    username: 
     # 授权码
-    password:
+    password: 
     host: smtp.qq.com
     port: 465
     properties:
@@ -41,8 +41,8 @@ spring:
     static-path-pattern: /**
   datasource:
     # 配置数据源
-    username:
-    password:
+    username: 
+    password: 
     url: jdbc:mysql://127.0.0.1:3306/lightning-cloud?serverTimezone=Hongkong&useAffectedRows=true
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource

@@ -20,4 +20,7 @@ public interface MyFileMapper {
 
     // 获得仓库根目录下的所有文件
     List<MyFile> getRootFilesByFileStoreId(@Param("fileStoreId") Integer fileStoreId);
+
+    // 根据类型获取文件
+    List<MyFile> getFilesByType(@Param("fileStoreId") Integer fileStoreId, @Param("type") Integer type);
 }

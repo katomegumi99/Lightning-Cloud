@@ -18,4 +18,6 @@ public interface MyFileService {
 
     // 获得仓库根目录下的所有文件
     List<MyFile> getRootFilesByFileStoreId(Integer fileStoreId);
+
+    List<MyFile> getFilesByType(Integer fileStoreId, Integer type);
 }

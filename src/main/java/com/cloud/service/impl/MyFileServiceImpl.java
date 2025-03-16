@@ -17,6 +17,7 @@ public class MyFileServiceImpl extends BaseService implements MyFileService {
 
     /**
      * 获取仓库的统计信息
+     *
      * @param fileStoreId
      * @return
      */
@@ -34,6 +35,7 @@ public class MyFileServiceImpl extends BaseService implements MyFileService {
 
     /**
      * 根据文件id删除文件
+     *
      * @param myFileId
      */
     @Override
@@ -43,11 +45,23 @@ public class MyFileServiceImpl extends BaseService implements MyFileService {
 
     /**
      * 获得仓库根目录下的所有文件
+     *
      * @param fileStoreId
      * @return
      */
     @Override
     public List<MyFile> getRootFilesByFileStoreId(Integer fileStoreId) {
         return myFileMapper.getRootFilesByFileStoreId(fileStoreId);
+    }
+
+    /**
+     * 根据类型获取文件
+     * @param fileStoreId
+     * @param type
+     * @return
+     */
+    @Override
+    public List<MyFile> getFilesByType(Integer fileStoreId, Integer type) {
+        return myFileMapper.getFilesByType(fileStoreId, type);
     }
 }

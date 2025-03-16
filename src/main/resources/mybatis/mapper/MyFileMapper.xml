@@ -127,12 +127,20 @@
         where parent_folder_id = #{parentFolderId};
     </select>
 
-    <!--    获得仓库根目录下的所有文件-->
+    <!--获得仓库根目录下的所有文件-->
     <select id="getRootFilesByFileStoreId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from my_file
         where file_store_id = #{fileStoreId} and parent_folder_id = 0;
+    </select>
+
+    <!--根据类型获取文件-->
+    <select id="getFilesByType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from my_file
+        where file_store_id = #{fileStoreId} and type = #{type}
     </select>
 
 </mapper>
