@@ -19,4 +19,8 @@ public interface FileFolderMapper {
 
 //    根据文件夹id获取文件夹
     FileFolder getFileFolderById(@Param("fileFolderId") Integer fileFolderId);
+
+    Integer addFileFolder(FileFolder folder);
+
+    Integer updateFileFolderById(FileFolder fileFolder);
 }

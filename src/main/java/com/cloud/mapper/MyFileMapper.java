@@ -23,4 +23,11 @@ public interface MyFileMapper {
 
     // 根据类型获取文件
     List<MyFile> getFilesByType(@Param("fileStoreId") Integer fileStoreId, @Param("type") Integer type);
+
+    // 添加文件
+    Integer addFileByFileStoreId(MyFile myFile);
+
+    MyFile getFileByFileId(@Param("fileId") Integer fileId);
+
+    Integer updateFileByFileId(MyFile myFile);
 }

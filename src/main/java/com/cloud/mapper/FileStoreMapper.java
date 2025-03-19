@@ -24,4 +24,6 @@ public interface FileStoreMapper {
     Integer addFileStore(FileStore fileStore);
 
     FileStore getFileStoreById(@Param("fileStoreId") Integer fileStoreId);
+
+    Integer addSize(@Param("fileStoreId") Integer fileStoreId, @Param("size") Integer size);
 }

@@ -101,6 +101,27 @@
         </if>
     </sql>
 
+
+    <insert id="addFileByFileStoreId" keyColumn="my_file_id" keyProperty="myFileId"
+            parameterType="com.cloud.entity.MyFile" useGeneratedKeys="true">
+        insert into my_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <include refid="Base_Insert_Key_List"/>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <include refid="Base_Insert_Value_List"/>
+        </trim>
+    </insert>
+
+
+    <update id="updateFileByFileId" parameterType="com.cloud.entity.MyFile">
+        update my_file
+        <set>
+            <include refid="Base_Update_List"/>
+        </set>
+        where my_file_id = #{myFileId,jdbcType=INTEGER}
+    </update>
+
     <!--    根据文件id删除文件-->
     <delete id="deleteByFileId">
         delete
@@ -141,6 +162,14 @@
         <include refid="Base_Column_List"/>
         from my_file
         where file_store_id = #{fileStoreId} and type = #{type}
+    </select>
+
+
+    <select id="getFileByFileId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from my_file
+        where my_file_id = #{fileId,jdbcType=INTEGER}
     </select>
 
 </mapper>

@@ -20,4 +20,11 @@ public interface MyFileService {
     List<MyFile> getRootFilesByFileStoreId(Integer fileStoreId);
 
     List<MyFile> getFilesByType(Integer fileStoreId, Integer type);
+
+    Integer addFileByFileStoreId(MyFile myFile);
+
+    MyFile getFileByFileId(Integer fileId);
+
+    // 根据文件id修改文件
+    Integer updateFile(MyFile myFile);
 }

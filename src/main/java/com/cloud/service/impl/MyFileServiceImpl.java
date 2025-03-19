@@ -64,4 +64,19 @@ public class MyFileServiceImpl extends BaseService implements MyFileService {
     public List<MyFile> getFilesByType(Integer fileStoreId, Integer type) {
         return myFileMapper.getFilesByType(fileStoreId, type);
     }
+
+    @Override
+    public Integer addFileByFileStoreId(MyFile myFile) {
+        return myFileMapper.addFileByFileStoreId(myFile);
+    }
+
+    @Override
+    public MyFile getFileByFileId(Integer fileId) {
+        return myFileMapper.getFileByFileId(fileId);
+    }
+
+    @Override
+    public Integer updateFile(MyFile myFile) {
+        return myFileMapper.updateFileByFileId(myFile);
+    }
 }

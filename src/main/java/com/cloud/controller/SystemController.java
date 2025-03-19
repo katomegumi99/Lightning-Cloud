@@ -4,11 +4,10 @@ import com.cloud.entity.FileFolder;
 import com.cloud.entity.FileStoreStatistics;
 import com.cloud.entity.MyFile;
 import com.cloud.utils.LogUtils;
-import jdk.nashorn.internal.ir.CallNode;
-import lombok.Getter;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -166,7 +165,7 @@ public class SystemController extends BaseController {
             folders = fileFolderService.getRootFoldersByFileStoreId(loginUser.getFileStoreId());
             nowFolder = FileFolder.builder().fileFolderId(folderId).build();
             location.add(nowFolder);
-        }else {
+        } else {
             // 当前为具体目录
             folders = fileFolderService.getFileFolderByParentFolderId(folderId);
             nowFolder = fileFolderService.getFileFolderByFileFolderId(folderId);
@@ -182,87 +181,92 @@ public class SystemController extends BaseController {
 
         // 封装统计信息
         FileStoreStatistics statistics = myFileService.getCountStatistics(loginUser.getFileStoreId());
-        map.put("statistics",statistics);
-        map.put("folders",folders);
-        map.put("nowFolder",nowFolder);
-        map.put("location",location);
+        map.put("statistics", statistics);
+        map.put("folders", folders);
+        map.put("nowFolder", nowFolder);
+        map.put("location", location);
         logger.info("网盘页面域中的数据:" + map);
         return "u-admin/upload";
     }
 
     /**
      * 图像文件页面
+     *
      * @param map
      * @return
      */
     @GetMapping("/image-files")
-    public String imageFilePage(Map<String,Object> map) {
+    public String imageFilePage(Map<String, Object> map) {
         List<MyFile> files = myFileService.getFilesByType(loginUser.getFileStoreId(), 2);
 
         // 封装统计信息
         FileStoreStatistics statistics = myFileService.getCountStatistics(loginUser.getFileStoreId());
-        map.put("statistics",statistics);
-        map.put("files",files);
-        map.put("permission",fileStoreService.getFileStoreByUserId(loginUser.getUserId()).getPermission());
+        map.put("statistics", statistics);
+        map.put("files", files);
+        map.put("permission", fileStoreService.getFileStoreByUserId(loginUser.getUserId()).getPermission());
         return "u-admin/image-files";
     }
 
     /**
      * 视频文件页面
+     *
      * @param map
      * @return
      */
     @GetMapping("/video-files")
-    public String videoFilePage(Map<String,Object> map) {
+    public String videoFilePage(Map<String, Object> map) {
         // 获取文件
         List<MyFile> files = myFileService.getFilesByType(loginUser.getFileStoreId(), 3);
 
         // 封装统计信息
         FileStoreStatistics statistics = myFileService.getCountStatistics(loginUser.getFileStoreId());
-        map.put("statistics",statistics);
-        map.put("files",files);
-        map.put("permission",fileStoreService.getFileStoreByUserId(loginUser.getUserId()).getPermission());
+        map.put("statistics", statistics);
+        map.put("files", files);
+        map.put("permission", fileStoreService.getFileStoreByUserId(loginUser.getUserId()).getPermission());
         return "u-admin/video-files";
     }
 
     /**
      * 音频文件页面
+     *
      * @param map
      * @return
      */
     @GetMapping("/music-files")
-    public String musicFilePage(Map<String,Object> map) {
+    public String musicFilePage(Map<String, Object> map) {
         // 获取文件
         List<MyFile> files = myFileService.getFilesByType(loginUser.getFileStoreId(), 4);
 
         // 封装统计信息
         FileStoreStatistics statistics = myFileService.getCountStatistics(loginUser.getFileStoreId());
-        map.put("statistics",statistics);
-        map.put("files",files);
-        map.put("permission",fileStoreService.getFileStoreByUserId(loginUser.getUserId()).getPermission());
+        map.put("statistics", statistics);
+        map.put("files", files);
+        map.put("permission", fileStoreService.getFileStoreByUserId(loginUser.getUserId()).getPermission());
         return "u-admin/music-files";
     }
 
     /**
      * 其他文件页面
+     *
      * @param map
      * @return
      */
     @GetMapping("/other-files")
-    public String otherFilePage(Map<String,Object> map) {
+    public String otherFilePage(Map<String, Object> map) {
         // 获取文件
         List<MyFile> files = myFileService.getFilesByType(loginUser.getFileStoreId(), 5);
 
         // 封装仓库统计数据
         FileStoreStatistics statistics = myFileService.getCountStatistics(loginUser.getFileStoreId());
-        map.put("statistics",statistics);
-        map.put("files",files);
-        map.put("permission",fileStoreService.getFileStoreByUserId(loginUser.getUserId()).getPermission());
+        map.put("statistics", statistics);
+        map.put("files", files);
+        map.put("permission", fileStoreService.getFileStoreByUserId(loginUser.getUserId()).getPermission());
         return "u-admin/other-files";
     }
 
     /**
      * 帮助页面
+     *
      * @param map
      * @return
      */

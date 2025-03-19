@@ -18,4 +18,6 @@ public interface FileStoreService {
     Integer addFileStore(FileStore fileStore);
 
     FileStore getFileStoreById(Integer fileStoreId);
+
+    int addSize(Integer fileStoreId, Integer size);
 }

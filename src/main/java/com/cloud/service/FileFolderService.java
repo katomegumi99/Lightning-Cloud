@@ -18,4 +18,7 @@ public interface FileFolderService {
     // 根据fileFolderId查询文件夹
     FileFolder getFileFolderByFileFolderId(Integer fileFolderId);
 
+    Integer addFileFolder(FileFolder folder);
+
+    Integer updateFileFolderById(FileFolder fileFolder);
 }

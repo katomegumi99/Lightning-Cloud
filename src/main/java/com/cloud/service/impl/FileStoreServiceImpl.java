@@ -51,4 +51,15 @@ public class FileStoreServiceImpl extends BaseService implements FileStoreServic
     public FileStore getFileStoreById(Integer fileStoreId) {
         return fileStoreMapper.getFileStoreById(fileStoreId);
     }
+
+    /**
+     * 更新仓库存储空间大小
+     * @param fileStoreId
+     * @param size
+     * @return
+     */
+    @Override
+    public int addSize(Integer fileStoreId, Integer size) {
+        return fileStoreMapper.addSize(fileStoreId,size);
+    }
 }

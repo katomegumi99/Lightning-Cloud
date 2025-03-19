@@ -16,6 +16,13 @@
         values (#{userId})
     </insert>
 
+    <!--    更新仓库大小-->
+    <update id="addSize">
+        update file_store
+        set current_size = current_size + #{size}
+        where file_store_id = #{id}
+    </update>
+
 
     <!--    更新权限和最大容量-->
     <update id="updatePermission">

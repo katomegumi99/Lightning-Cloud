@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
@@ -115,6 +116,102 @@ public class LoginController extends BaseController {
         session.setAttribute(email + "_code", code);
         return "success";
     }
+
+    /**
+     * qq登录
+     */
+    @GetMapping("/loginByQQ")
+    public void login() {
+        response.setContentType("text/html;charset=utf-8");
+        try {
+            response.sendRedirect(new Oauth().getAuthorizeURL(request));
+            logger.info("请求QQ登录,开始跳转...");
+        } catch (QQConnectException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * QQ登录回调地址
+     * @return
+     **/
+    @GetMapping("/connection")
+    public String connection() {
+        try {
+            AccessToken accessTokenObj = (new Oauth()).getAccessTokenByRequest(request);
+            String accessToken = null, openID = null;
+            long tokenExpireIn = 0L;
+            if ("".equals(accessTokenObj.getAccessToken())) {
+                logger.error("登录失败:没有获取到响应参数");
+                return "accessTokenObj=>" + accessTokenObj + "; accessToken" + accessTokenObj.getAccessToken();
+            } else {
+                accessToken = accessTokenObj.getAccessToken();
+                tokenExpireIn = accessTokenObj.getExpireIn();
+                logger.error("accessToken" + accessToken);
+                request.getSession().setAttribute("demo_access_token", accessToken);
+                request.getSession().setAttribute("demo_token_expirein", String.valueOf(tokenExpireIn));
+                // 利用获取到的accessToken 去获取当前用的openid -------- start
+                OpenID openIDObj = new OpenID(accessToken);
+                openID = openIDObj.getUserOpenID();
+                UserInfo qzoneUserInfo = new UserInfo(accessToken, openID);
+                UserInfoBean userInfoBean = qzoneUserInfo.getUserInfo();
+                if (userInfoBean.getRet() == 0) {
+                    logger.info("用户的OPEN_ID: " + openID);
+                    logger.info("用户的昵称: " + removeNonBmpUnicode(userInfoBean.getNickname()));
+                    logger.info("用户的头像URI: " + userInfoBean.getAvatar().getAvatarURL100());
+                    //设置用户信息
+                    User user = userService.getUserByOpenId(openID);
+                    if (user == null){
+                        user = User.builder()
+                                .openId(openID).userName(removeNonBmpUnicode(userInfoBean.getNickname()))
+                                .imagePath(userInfoBean.getAvatar().getAvatarURL100()).
+                                registerTime(new Date()).build();
+                        if (userService.insert(user)){
+                            logger.info("注册用户成功！当前注册用户" + user);
+                            FileStore store = FileStore.builder().userId(user.getUserId()).build();
+                            if (fileStoreService.addFileStore(store) == 1){
+                                user.setFileStoreId(store.getFileStoreId());
+                                userService.update(user);
+                                logger.info("注册仓库成功！当前注册仓库" + store);
+                            }
+                        } else {
+                            logger.error("注册用户失败！");
+                        }
+                    }else {
+                        user.setUserName(removeNonBmpUnicode(userInfoBean.getNickname()));
+                        user.setImagePath(userInfoBean.getAvatar().getAvatarURL100());
+                        userService.update(user);
+                    }
+                    logger.info("QQ用户登录成功！"+user);
+                    session.setAttribute("loginUser", user);
+                    return "redirect:/index";
+                } else {
+                    logger.error("很抱歉，我们没能正确获取到您的信息，原因是： " + userInfoBean.getMsg());
+                }
+            }
+        } catch (QQConnectException e) {
+        } finally {
+            logger.error("登录成功!");
+        }
+        return "登录失败!请查看日志信息...";
+    }
+
+    /**
+     * 处理名称中的特殊符号
+     * @param str
+     * @return
+     */
+    public String removeNonBmpUnicode(String str) {
+        if (str == null) {
+            return null;
+        }
+        str = str.replaceAll("[^\\u0000-\\uFFFF]", "");
+        if ("".equals(str)) {
+            str = "($ _ $)";
+        }
+        return str;
+    }
+
 
     /**
      * 退出登录
